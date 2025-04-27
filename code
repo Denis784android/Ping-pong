@@ -20,10 +20,10 @@ clock = pygame.time.Clock()
 font1 = font.Font(None, 36)
 lose_text = font1.render("YOU LOSE!", True, (255, 255, 255))
 win_text = font1.render("YOU WIN!", True, (255, 255, 255))
-class Enemy(pygame.sprite.Sprite):
+class Ball(pygame.sprite.Sprite):
     def __init__(self, x, y, size_x, size_y, speed):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("ufo.png")  
+        self.image = pygame.image.load("мяч.png")  
         self.image = pygame.transform.scale(self.image, (100, 100))
         self.speed = speed
         self.rect = self.image.get_rect()
@@ -40,7 +40,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("rocket.png")  
+        self.image = pygame.image.load("ракетка.png")  
         self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.rect.center = (350, 440) 
@@ -55,13 +55,14 @@ class Player(pygame.sprite.Sprite):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
 game = True
+ball = Ball(350, 200, 50, 50, 10)
 while game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             pygame.quit()
             sys.exit()
     window.blit(background, (0, 0))   
-
+   #window.draw(ball, (0, 0))
 
 
     pygame.display.flip()
