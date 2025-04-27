@@ -1,0 +1,68 @@
+import pygame
+import sys
+from random import randint
+pygame.init()
+from pygame import font
+
+
+
+#from tkinter import font
+
+win_width = 700
+win_height = 500 
+pygame.display.set_caption("PingPong") 
+window = pygame.display.set_mode((win_width, win_height)) 
+background = pygame.transform.scale(pygame.image.load('fon1.jpg'), (win_width, win_height))
+
+#pygame.mixer.music.load("space.ogg")  
+#pygame.mixer.music.play(-1)  
+clock = pygame.time.Clock()
+font1 = font.Font(None, 36)
+lose_text = font1.render("YOU LOSE!", True, (255, 255, 255))
+win_text = font1.render("YOU WIN!", True, (255, 255, 255))
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, x, y, size_x, size_y, speed):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("ufo.png")  
+        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.speed = speed
+        self.rect = self.image.get_rect()
+        self.rect.x = x 
+        self.rect.y = y
+    def update(self):
+        self.rect.y += self.speed
+        global lost
+        if self.rect.y > 500:
+            self.rect.y = 0
+            self.rect.x = randint(80, 620)
+            global lost
+            lost += 1
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("rocket.png")  
+        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.rect = self.image.get_rect()
+        self.rect.center = (350, 440) 
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and self.rect.x >= 5:
+            self.rect.x -= 5
+        if keys[pygame.K_RIGHT] and self.rect.x <= 685 - 90:
+            self.rect.x += 5
+    def reset(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+game = True
+while game:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            pygame.quit()
+            sys.exit()
+    window.blit(background, (0, 0))   
+
+
+
+    pygame.display.flip()
+    clock.tick(60)
